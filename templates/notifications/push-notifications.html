@@ -1,0 +1,149 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Add News{% endblock title %}
+{% block extra_css %}
+
+<!-- Plugins css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- quill css -->
+<link href="{% static 'libs/quill/dist/quill.core.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/quill/dist/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- DataTables -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+
+<!-- Responsive datatable examples -->
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+
+<link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet">
+
+{% endblock extra_css %}
+{% block content %}
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Push Notifications </h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}                                        
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-floating mb-2">
+                                        <input type="text" class="form-control" name="notification_title" id="notification_title" placeholder="Notification Title" required>
+                                        <label for="notification_title">Notification Title</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-floating mb-2">    
+                                        <input type="text" class="form-control" name="notification_image_url" id="notification_image_url" placeholder="Notification Title" required>
+                                        <label for="notification_image_url">Notification Image URL</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" type="text" name="notification_body" id="notification_body" rows="8" placeholder="Enter Notification Body"></textarea>
+                                </div>
+                            </div>
+                                                        
+                            <div style="text-align: right;">
+                                <button style="width: 15%;" type="submit" class="btn btn-primary btn-lg waves-effect waves-light">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end card -->
+            </div> <!-- end col -->
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
+{% block extra_javascript %}
+<!-- dropzone js -->
+<script src="{% static 'libs/dropzone/dist/min/dropzone.min.js' %}"></script>
+
+<!--Quill js-->
+<script src="{% static 'libs/quill/dist/quill.min.js' %}"></script>
+
+<!-- init js -->
+<script src="{% static 'js/pages/form-editor.init.js' %}"></script>
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+
+<script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+<script>
+   
+    // query the input element (use whatever method you prefer)
+    let inputElement = document.getElementById('content')
+    quill.on('text-change', function() {
+      // sets the value of the hidden input to
+      // the editor content in Delta format
+      inputElement.value = JSON.stringify(quill.getText())
+    
+      // you can alternatively use
+      // inputElement.value = quill.root.innerHTML
+      // if you want the data as HTML
+    });
+    
+</script>
+
+<!-- Required datatable js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Responsive examples -->
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}"></script>
+<script src="{% static 'libs/admin-resources/bootstrap-filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-maxlength/dist/bootstrap-maxlength.min.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+    $('.multiple-select2-tag').select2();
+});
+</script>
+{% endblock extra_javascript %}
