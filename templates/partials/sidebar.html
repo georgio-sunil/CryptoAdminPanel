@@ -1,0 +1,82 @@
+{% load static %}
+
+{% block sidebar %}
+            <!-- ========== Left Sidebar Start ========== -->
+            <div class="vertical-menu">
+
+                <div data-simplebar class="h-100">
+
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title">Menu</li>
+
+                            <li>
+                                <a href="{% url 'dashboard' %}" class="waves-effect">
+                                    <i class="mdi mdi-home-variant-outline"></i>
+                                    <!-- <span class="badge rounded-pill bg-primary float-end">3</span> -->
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-coins-fill"></i>
+                                    <span>Coin</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'coin-tables' %}">Coin List</a></li>
+                                    <!-- <li><a href="#">Read Email</a></li>
+                                    <li><a href="#">Email Compose</a></li> -->
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-email-outline"></i>
+                                    <span>News</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'news' %}">News List</a></li>
+                                </ul>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'news-feed' %}">News Feed</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-email-outline"></i>
+                                    <span>Academy</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'courses' %}">Course List</a></li>
+                                </ul>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'categories-list' %}">Categories List</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="menu-title">Layouts</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-gradient"></i>
+                                    <span>Vertical</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{% url 'vertical-light-sidebar' %}">Light Sidebar</a></li>
+                                    <li><a href="{% url 'vertical-compact-sidebar' %}">Compact Sidebar</a></li>
+                                    <li><a href="{% url 'vertical-icon-sidebar' %}">Icon Sidebar</a></li>
+                                    <li><a href="{% url 'vertical-boxed' %}">Boxed Layout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+            <!-- Left Sidebar End -->
+{% endblock sidebar %}
+    

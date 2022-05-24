@@ -1,0 +1,143 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}News List{% endblock title %}
+{% block extra_css %}
+<!-- DataTables -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+
+<!-- Responsive datatable examples -->
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+
+<link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">News List</h4>
+                    <tr>
+                        <td>
+                            <div>
+                                <a href="{% url 'news-create' %}">
+                                    <button type="button" class="btn btn-primary btn-lg waves-effect waves-light">
+                                        Add New Category +
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="disable-coin" method="POST">
+                            {% csrf_token %}
+                            <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap"
+                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th>Image</th>
+                                        <th>Title</th>
+                                        <th>Course</th>
+                                        <th>Topics</th>
+                                        <th>Videos</th>
+                                        <th>Comments</th>
+                                        <th>Date</th>
+                                        <!-- <th>Status</th> -->
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for category in categories_list %}
+                                    <tr style="text-align: center;">
+                                        <td> 
+                                            <img src="" width="50" height="50">
+                                        </td>
+                                        <td>
+                                            {{ category.category_name }}
+                                        </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>                                    
+                                        <!-- Status Row -->
+                                        <!-- <td style="display: block; text-align: center; margin: auto;">
+                                            {% if coin.active == True %}
+                                            <button type="button"
+                                                class="btn btn-success btn-rounded waves-effect waves-light">Active</button>
+                                            {% elif coin.active == False %}
+                                            <button type="button"
+                                                class="btn btn-danger btn-rounded waves-effect waves-light">Inactive</button>
+                                            {% endif %}
+                                        </td> -->
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+    </div> <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+{% endblock content %}
+{% block extra_javascript %}
+<!-- Required datatable js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Responsive examples -->
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}"></script>
+<script src="{% static 'libs/admin-resources/bootstrap-filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-maxlength/dist/bootstrap-maxlength.min.js' %}"></script>
+
+<!-- init js -->
+<script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
+
+<script>
+    function buttonChange(index) {
+        var id = "checkButton" + index.toString();
+        document.getElementById(id).className = "btn btn-danger btn-rounded waves-effect waves-light";
+        document.getElementById(id).innerHTML = "Added";
+    }
+</script>
+{% endblock extra_javascript %}

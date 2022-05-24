@@ -1,0 +1,47 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Light Sidebar{% endblock title %}
+{% block extra_css %}
+        <!-- jvectormap -->
+        <link href="{% static 'libs/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet" />
+{% endblock extra_css %}
+{% block body %}data-topbar="colored"{% endblock body %}
+{% block content %}
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Light Sidebar</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Upzet</a></li>
+                                            <li class="breadcrumb-item active">Light Sidebar</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        
+                        
+                        
+                    </div>
+                    <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+{% endblock content %}
+{% block extra_javascript %}
+        <!-- apexcharts js -->
+        <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+        
+        <!-- jquery.vectormap map -->
+        <script src="{% static 'libs/jqvmap/dist/jquery.vmap.min.js' %}"></script>
+        <script src="{% static 'libs/jqvmap/dist/maps/jquery.vmap.usa.js' %}"></script>
+        
+        <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
+{% endblock extra_javascript %} 

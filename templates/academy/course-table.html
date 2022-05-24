@@ -1,0 +1,201 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}News Feed List{% endblock title %}
+{% block extra_css %}
+<!-- Plugins css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- DataTables -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+
+<!-- Responsive datatable examples -->
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
+
+<link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+{% block content %}
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Course List</h4>
+                    <tr>
+                        <td>
+                            <div>
+                                <!-- Small modal -->
+                                <button type="button" class="btn btn-primary btn-lg waves-effect waves-light"
+                                    data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Add New Course +
+                                </button>
+                            </div>
+
+                            <!-- Add New Coin Modal-->
+                            <div class="modal fade bs-example-modal-center" id="addModal" role="dialog"
+                                aria-labelledby="mySmallModalLabel">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Add New Course</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Course Name</label>
+                                                    <div class="col-md-9">
+                                                        <input class="form-control" type="text" placeholder="Enter Feed Name...." name="course_name" id="course_name">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="example-url-input" class="col-md-3 col-form-label">Course Tags</label>
+                                                    <div class="col-md-9">
+                                                        <select class="multiple-select2-tag" name="course_tags" id="course_tags" multiple="multiple" multiple data-placeholder="Choose ...">
+                                                            <optgroup label="Crypto Tags">
+                                                                <option value="ADA">Cardano</option>
+                                                                <option value="ETH">Ethereum</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Upload Image</label>
+                                                    <div class="col-md-9">
+                                                        <input type="file" class="filestyle" name="course_image" id="course_image" data-buttonname="btn-secondary">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Course Description</label>
+                                                    <div class="col-md-9">
+                                                        <textarea class="form-control" type="text" name="course_desc" id="course_desc" rows="3" placeholder="Enter Course Description...."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <button type="submit" name='add-course' class="btn btn-primary mr-auto">Add Course</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+
+                        </td>
+                    </tr>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="feed-status" method="POST">
+                            {% csrf_token %}
+                            <table id="key-datatable" class="table table-striped table-bordered dt-responsive nowrap"
+                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th style="width: 10%">Image</th>
+                                        <th style="width: 10%">Title</th>
+                                        <th style="width: 10%">Watched List</th>
+                                        <th style="width: 10%">Topics</th>
+                                        <th style="width: 10%">Videos</th>
+                                        <th style="width: 10%">Comments</th>
+                                        <th style="width: 10%">Date</th>
+                                        <th style="width: 10%">Status</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for course in course_list %}
+                                    <tr style="text-align: center;">
+                                        <td> </td>
+                                        <td>
+                                            <a href="{% url 'course-details' course.id %}">
+                                                {{ course.course_name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ course.course_name  }}</td>
+                                        <td>{{ course.course_name  }}</td>
+                                        <td>{{ course.course_name  }}</td>
+                                        <td>{{ course.course_name  }}</td>
+                                        <td>{{ course.course_name  }}</td>
+                                        <td style="display: block; text-align: center; margin: auto;">
+                                            {% if feed.status == True %}
+                                            <!-- <button type="button" class="btn btn-success btn-rounded waves-effect waves-light">Active</button> -->
+                                            <h4>
+                                                <span class="badge badge-soft-info">Active</span>
+                                            </h4>
+                                            {% elif feed.status == False %}
+                                            <h4>
+                                                <span class="badge badge-soft-danger">Inactive</span>
+                                            </h4>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+    </div> <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+{% endblock content %}
+{% block extra_javascript %}
+<!-- Required datatable js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Responsive examples -->
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}"></script>
+<script src="{% static 'libs/admin-resources/bootstrap-filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-maxlength/dist/bootstrap-maxlength.min.js' %}"></script>
+
+<!-- init js -->
+<script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+    $('.multiple-select2-tag').select2({
+        dropdownParent: $("#addModal")
+    });
+});
+</script>
+{% endblock extra_javascript %}

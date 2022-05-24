@@ -1,0 +1,158 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Add Topic{% endblock title %}
+{% block extra_css %}
+
+<!-- Plugins css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- quill css -->
+<link href="{% static 'libs/quill/dist/quill.core.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/quill/dist/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+
+<link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet">
+
+{% endblock extra_css %}
+{% block content %}
+
+<h1>Add Topic</h1>
+
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Add Topic</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <!-- <div class="container pt-5">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{field.label}}</label>
+                        {{field}}
+                        {% for error in field.errors %}
+                            <span class="help-block" style="color:red">{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div> -->
+
+   <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                                <div class="form-group">
+                                    <!-- <label for="{{ field.id_for_label }}">{{field.label}}</label>
+                                    <div>
+                                        {{field}}
+                                    </div>
+                                    {% for error in field.errors %}
+                                        <span class="help-block" style="color:red">{{error}}</span>
+                                    {% endfor %} -->
+                                    <div class="col-md-8">
+                                        <div class="form-floating mb-2">
+                                            <input type="text" class="form-control" name="topic_name" id="topic_name" required>
+                                            <label for="topic_name">Topic Name</label> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-floating mb-2">
+                                            <input type="text" class="form-control" name="topic_type" id="topic_type" required>
+                                            <label for="topic_type">Topic Type</label> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-floating mb-2">
+                                            <input type="text" class="form-control" name="topic_url" id="topic_url" required>
+                                            <label for="topic_content">Upload Topic Content Link</label>
+                                        </div>
+                                    </div> 
+                                    <!-- <div class="col-md-8">
+                                        <div class="form-floating mb-2">
+                                            <input type="text" class="form-control" name="topic_url" id="topic_url" required>
+                                            <label for="topic_url">Topic Link</label> 
+                                        </div>
+                                    </div> -->
+                                    <div class="col-md-8">
+                                        <label for="topic_url">Upload Image / Video</label>
+                                        <div class="form-floating mb-2">
+                                            <input type="file" class="filestyle" name="topic_image" id="topic_image" data-buttonname="btn-secondary" placeholder="Upload your image....">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-md-8">
+                                        <label for="topic_desc">Topic Description</label>
+                                        <textarea class="form-control" name="topic_desc" id="topic_desc" cols="100" rows="12" required></textarea>
+                                        <!-- <div id="email-editor" style="height: 300px;">
+                                            {{ topic.topic_desc }}
+                                        </div>
+                                        <input type="hidden" name="topic_desc" id="topic_desc"> -->
+                                    </div>           
+                                </div>
+                            <br>
+                            <div style="text-align: right;">
+                                <button style="width: 15%;" type="submit" class="btn btn-primary btn-lg waves-effect waves-light">Add Topic</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
+</div>
+
+{% endblock content %}
+{% block extra_javascript %}
+<!-- dropzone js -->
+<script src="{% static 'libs/dropzone/dist/min/dropzone.min.js' %}"></script>
+
+<!--Quill js-->
+<script src="{% static 'libs/quill/dist/quill.min.js' %}"></script>
+
+<!-- init js -->
+<script src="{% static 'js/pages/form-editor.init.js' %}"></script>
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+
+<script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+<!-- Required datatable js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+
+<script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}"></script>
+<script src="{% static 'libs/admin-resources/bootstrap-filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap-maxlength/dist/bootstrap-maxlength.min.js' %}"></script>
+
+{% endblock extra_javascript %}
