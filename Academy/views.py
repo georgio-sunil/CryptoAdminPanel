@@ -1,9 +1,11 @@
+from unicodedata import category
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
-from Academy.forms import AddCourseForm, TopicFileUploadForm, TopicForm, UpdateCourseForm
+from Academy.forms import AddCategoryForm, AddCourseForm, TopicFileUploadForm, TopicForm, UpdateCourseForm
 from services import api
+from services.models.Category import AddCategory
 from services.models.Courses import AddCourse, UpdateCourse
 from services.models.Topics import Topic
 from utilities.uploadFile import saveFile
@@ -38,6 +40,20 @@ class CategoriesTable(LoginRequiredMixin, TemplateView):
     template_name = "academy/categories/categories_list.html"
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
+
+    def post(self, request, *args, **kwargs):
+        form = AddCategoryForm(request.POST or None)
+        if form.is_valid():
+            category = AddCategory(
+                form.cleaned_data['category_name'],
+                form.cleaned_data['category_type'],
+                form.cleaned_data['category_tags'].split(","),
+            )
+            print(category)
+            if api.addCategory(category):
+                print("Category Added")
+        return HttpResponseRedirect(reverse('categories-list'))
+
 
     def get_context_data(self, **kwargs):
         categories_list = api.fetchCategories()

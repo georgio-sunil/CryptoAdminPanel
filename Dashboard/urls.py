@@ -12,6 +12,6 @@ urlpatterns = [
     path('vertical-icon-sidebar', views.IconSidebar.as_view(),name='vertical-icon-sidebar'),
 
     path('coin', include('Coins.urls')),
-    path('news', include('News.urls')),
-    path('courses', include('Academy.urls'))
+    path('news/', include('News.urls')),
+    path('courses/', include('Academy.urls'))
 ]
