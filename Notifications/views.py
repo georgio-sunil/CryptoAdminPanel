@@ -21,5 +21,5 @@ class PushNotifications(LoginRequiredMixin, TemplateView):
             )
             print(notification)
             # Enter Registration Token
-            sendPush(notification["notification_title"], notification["notification_body"], ["749ddedeueiej7978733e33df5gvt"])
+            sendPush(notification["notification_title"], notification["notification_body"], notification["notification_image_url"], ["BLrJe57QfiQ3vkez-11vkNsqzMtoZIXvc9UEP6Rs5q9HMmxk5zc-2N21Jzu5KeHtq677g9rXzZUSPWWj0E2q5kE"])
         return HttpResponseRedirect(reverse('notifications'))
