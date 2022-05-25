@@ -13,4 +13,5 @@ urlpatterns = [
 
     # Category Routing
     path('categories', views.CategoriesTable.as_view(), name='categories-list'),
+    path('categories/detail/<str:pk>', views.UpdateCategory.as_view(), name='categories-detail'),
 ]

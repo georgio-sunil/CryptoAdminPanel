@@ -62,6 +62,33 @@ class CategoriesTable(LoginRequiredMixin, TemplateView):
         }
         return context
 
+class UpdateCategory(LoginRequiredMixin, TemplateView):
+    template_name = "academy/categories/update_categories.html"
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+    pk_url_kwarg = 'pk'
+
+    def post(self, request, *args, **kwargs):
+        form = AddCategoryForm(request.POST or None)
+        categoryID = str(self.kwargs['pk'])
+        if form.is_valid():
+            category = AddCategory(
+                form.cleaned_data['category_name'],
+                form.cleaned_data['category_type'],
+                form.cleaned_data['category_tags'].split(","),
+            )  
+            if api.updateCategory(categoryID, category):
+                print("Category Updated")
+        return HttpResponseRedirect(reverse('categories-list'))
+
+    def get_context_data(self, **kwargs):
+        categoryID = str(self.kwargs['pk'])
+        category_details = api.fetchCategory(categoryID)
+        context = {
+            "category" : category_details
+            }
+        return context
+
 class ViewCourse(LoginRequiredMixin, TemplateView):
     template_name = "academy/course-detail.html"
     login_url = '/login/'

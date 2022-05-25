@@ -194,6 +194,17 @@ def fetchCategories():
         print(response.content)
         return False
 
+def fetchCategory(id):
+    request_url = BASE_URL + CATEGORIES_API_ENDPOINT + "/" + id + "/"
+    response = requests.get(request_url)
+    if response.status_code == 200:
+        categories_list = response.json()
+        return categories_list
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
 def addCategory(categoryObject):
     request_url = BASE_URL + CATEGORIES_API_ENDPOINT + "/"
     requestBody = categoryObject
@@ -201,6 +212,20 @@ def addCategory(categoryObject):
     'accept': 'application/json'
     }
     response = requests.post(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        return True
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
+def updateCategory(id, categoryObject):
+    request_url = BASE_URL + CATEGORIES_API_ENDPOINT + "/" + id + "/"
+    requestBody = categoryObject
+    headers = {
+    'accept': 'application/json'
+    }
+    response = requests.patch(request_url, json=requestBody, headers=headers)
     if response.status_code == 200 or response.status_code == 201:
         return True
     else:
