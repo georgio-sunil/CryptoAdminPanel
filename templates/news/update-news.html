@@ -78,10 +78,7 @@
                                     <div>
                                         <label class="form-label">Enter the news content</label>
                                         <div class="col-md-8">
-                                            <div id="email-editor" style="height: 300px;">
-                                                {{ news.content }}
-                                            </div>
-                                            <input type="hidden" name="content" id="content">
+                                            <textarea class="form-control" type="text" name="content" id="content" rows="3">{{ news.content }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -144,22 +141,6 @@
 <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
 <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
-
-<script>
-   
-    // query the input element (use whatever method you prefer)
-    let inputElement = document.getElementById('content')
-    quill.on('text-change', function() {
-      // sets the value of the hidden input to
-      // the editor content in Delta format
-      inputElement.value = JSON.stringify(quill.getText())
-    
-      // you can alternatively use
-      // inputElement.value = quill.root.innerHTML
-      // if you want the data as HTML
-    });
-    
-</script>
 <script>
     $(document).ready(function() {
     $('.multiple-select2-tag').select2();

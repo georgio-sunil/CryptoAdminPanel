@@ -1,6 +1,6 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %}News Feed List{% endblock title %}
+{% block title %}Course List{% endblock title %}
 {% block extra_css %}
 <!-- Plugins css -->
 <link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
@@ -124,7 +124,9 @@
                                 <tbody>
                                     {% for course in course_list %}
                                     <tr style="text-align: center;">
-                                        <td> </td>
+                                        <td>
+                                            <img src="{{ course.course_image }}" width="50" height="50">
+                                        </td>
                                         <td>
                                             <a href="{% url 'course-details' course.id %}">
                                                 {{ course.course_name }}
