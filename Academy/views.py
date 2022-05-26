@@ -18,11 +18,13 @@ class CourseTable(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = AddCourseForm(request.POST or None)
+        image_url = saveFile(request.FILES['course_image'], 'course_images')
+        print(form)
         if form.is_valid():
             course = AddCourse(
                 form.cleaned_data['course_name'],
                 form.cleaned_data['course_tags'],
-                form.cleaned_data['course_image'],
+                image_url,
                 form.cleaned_data['course_desc']
             )
             if api.addCourse(course):
@@ -98,11 +100,19 @@ class ViewCourse(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         courseID = str(self.kwargs['pk'])
         form = UpdateCourseForm(request.POST or None)
-        print(form)
+        print('Status ' ,request.FILES.get('image_upload', True))
+        
+        if 'image_upload' in request.FILES:
+            image_url = saveFile(request.FILES['image_upload'], 'news_images')
+        else:
+            image_url = request.POST['image_upload']
+
+        print(image_url)
         if form.is_valid():
             course = UpdateCourse(
                 course_name = form.cleaned_data['course_name'],
                 course_tags = form.cleaned_data['course_tags'],
+                course_image=image_url,
                 course_desc = form.cleaned_data['course_desc'] 
             )
             if api.updateCourse(courseID, course):
@@ -154,7 +164,6 @@ class UpdateTopic(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = TopicForm(request.POST or None)
-        fileForm = TopicFileUploadForm(request.FILES)
         courseID = str(self.kwargs['pk'])
         course_details = api.fetchCourse(courseID)
         if form.is_valid():

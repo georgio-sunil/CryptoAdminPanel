@@ -88,11 +88,24 @@ class UpdateNews(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         newsID = str(self.kwargs['pk'])
         form = CreateNewsForm(request.POST or None)
+
+        # if request.POST.get('image_upload', True):
+        #     image_url = request.POST['image_upload']
+        # else:
+        #     image_url = saveFile(request.FILES['image_upload'], 'news_images')
+        
+        if 'image_upload' in request.FILES:
+            image_url = saveFile(request.FILES['image_upload'], 'news_images')
+        else:
+            image_url = request.POST['image_upload']
+
+        # print(form)
         if form.is_valid():
             print("valid")
             n = AddNews(form.cleaned_data['news_title'],
-                list(form.cleaned_data['tags']),
+                form.cleaned_data['tags'],
                 form.cleaned_data['content'],
+                image_url
             )
             print(n)
             if api.updateNews(newsID, n):

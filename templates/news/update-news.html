@@ -38,7 +38,7 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" novalidate>
+                        <form method="post" enctype="multipart/form-data" novalidate>
                             {% csrf_token %}
                                 <div class="form-group">
                                     <div class="col-md-8">
@@ -50,15 +50,28 @@
 
                                     <div class="col-md-8">
                                         <label for="image_upload">Upload Image</label>
-                                        <input type="file" class="filestyle" id="image_upload" data-buttonname="btn-secondary" placeholder="Upload your image....">
+                                        <input type="file" class="filestyle" name="image_upload" id="image_upload" data-buttonname="btn-secondary" placeholder="Upload your image....">
                                     </div>
-                                    
+                                    <input type="hidden" name="image_upload" id="image_upload" value="{{ news.img }}" >
                                     <br>
 
                                     <div class="col-md-8">
                                         <div class="form-floating mb-2">
-                                            <input type="text" class="form-control" name="tags" id="tags" placeholder="News Tags" value="{{ news.tags }}" required>
                                             <label for="tags">Tags</label>
+                                            <select style="width: 100%;" class="multiple-select2-tag" name="tags" id="tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
+                                                <optgroup label="Crypto Tags">
+                                                    <option value="cryptocurrency">CryptoCurrency</option>
+                                                    <option value="ADA">Cardano</option>
+                                                    <option value="ETH">Ethereum</option>
+                                                </optgroup>
+                                                <optgroup label="Blockchain Tags">
+                                                    <option value="BC">Blockchain</option>
+                                                    <option value="B">Blocks</option>
+                                                </optgroup>
+                                                {% for tags in news.tags %}
+                                                    <option value="{{tags}}" selected hidden>{{tags}}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                     </div>
 
@@ -146,6 +159,11 @@
       // if you want the data as HTML
     });
     
+</script>
+<script>
+    $(document).ready(function() {
+    $('.multiple-select2-tag').select2();
+});
 </script>
 
 <script src="{% static 'libs/select2/dist/js/select2.min.js' %}"></script>
