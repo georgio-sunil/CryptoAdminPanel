@@ -81,6 +81,12 @@
                                                     <input type="hidden" name="image_upload" id="image_upload" value="{{ course.course_image }}" >
                                                 </div>
                                                 <div class="mb-3 row">
+                                                    <label for="course_link" class="col-md-3 col-form-label">Course Link</label>
+                                                    <div class="col-md-9">
+                                                        <input class="form-control" type="text" placeholder="Enter Course Link...." name="course_url" id="course_url" value="{{ course.course_url }}">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
                                                     <label for="example-text-input" class="col-md-3 col-form-label">Course Description</label>
                                                     <div class="col-md-9">
                                                         <textarea class="form-control" type="text" name="course_desc" id="course_desc" rows="3" placeholder="Enter Course Description....">{{ course.course_desc }}</textarea>

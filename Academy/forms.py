@@ -9,6 +9,7 @@ class AddCourseForm(forms.Form):
     course_name = forms.CharField(max_length=200)
     course_tags = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                           choices=OPTIONS)
+    course_url = forms.CharField(max_length=200)
     course_desc = forms.CharField(max_length=500)
 
 class UpdateCourseForm(forms.Form):
@@ -19,6 +20,7 @@ class UpdateCourseForm(forms.Form):
     course_name = forms.CharField(max_length=200)
     course_tags = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                           choices=OPTIONS)
+    course_url = forms.CharField(max_length=200)
     course_desc = forms.CharField(max_length=500)
 
 class TopicForm(forms.Form):

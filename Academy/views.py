@@ -25,6 +25,7 @@ class CourseTable(LoginRequiredMixin, TemplateView):
                 form.cleaned_data['course_name'],
                 form.cleaned_data['course_tags'],
                 image_url,
+                form.cleaned_data['course_url'],
                 form.cleaned_data['course_desc']
             )
             if api.addCourse(course):
@@ -125,8 +126,10 @@ class ViewCourse(LoginRequiredMixin, TemplateView):
                 course_name = form.cleaned_data['course_name'],
                 course_tags = form.cleaned_data['course_tags'],
                 course_image=image_url,
+                course_url= form.cleaned_data['course_url'],
                 course_desc = form.cleaned_data['course_desc'] 
             )
+            print(course)
             if api.updateCourse(courseID, course):
                 print("Course Updated")
         return HttpResponseRedirect(reverse('courses'))
