@@ -71,7 +71,7 @@
                                 <div>
                                     <label class="form-label">Category Tags</label>
                                     <div class="col-md-8">
-                                        <select style="width: 100%;" class="multiple-select2-tag" name="tags" id="tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
+                                        <select style="width: 100%;" class="multiple-select2-tag" name="category_tags" id="category_tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
                                             {% for tags in category.tags %}
                                                 <option value="{{tags}}" selected hidden>{{tags}}</option>
                                             {% endfor %}
