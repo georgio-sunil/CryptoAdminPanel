@@ -34,4 +34,3 @@ class TopicFileUploadForm(forms.Form):
 class AddCategoryForm(forms.Form):
     category_type = forms.CharField(max_length=50)
     category_name = forms.CharField(max_length=50)
-    category_tags = forms.CharField(max_length=500)

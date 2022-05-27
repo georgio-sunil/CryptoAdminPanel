@@ -45,11 +45,14 @@ class CategoriesTable(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = AddCategoryForm(request.POST or None)
+        course_tags = request.POST.getlist('category_tags')
+        image_url = saveFile(request.FILES['image_upload'], 'category_images')
         if form.is_valid():
             category = AddCategory(
                 form.cleaned_data['category_name'],
                 form.cleaned_data['category_type'],
-                form.cleaned_data['category_tags'].split(","),
+                image_url,
+                course_tags,
             )
             print(category)
             if api.addCategory(category):
@@ -73,12 +76,21 @@ class UpdateCategory(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = AddCategoryForm(request.POST or None)
         categoryID = str(self.kwargs['pk'])
+        course_tags = request.POST.getlist('category_tags')
+
+        if 'image_upload' in request.FILES:
+            image_url = saveFile(request.FILES['image_upload'], 'category_images')
+        else:
+            image_url = request.POST['image_upload']
+
         if form.is_valid():
             category = AddCategory(
                 form.cleaned_data['category_name'],
                 form.cleaned_data['category_type'],
-                form.cleaned_data['category_tags'].split(","),
-            )  
+                image_url,
+                course_tags
+            )
+            print(category)  
             if api.updateCategory(categoryID, category):
                 print("Category Updated")
         return HttpResponseRedirect(reverse('categories-list'))

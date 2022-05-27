@@ -47,7 +47,7 @@
                                         </div>
                                         <div class="modal-body">
 
-                                            <form method="POST">
+                                            <form method="POST" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="mb-3 row">
                                                     <label for="example-text-input" class="col-md-3 col-form-label">Category Name</label>
@@ -59,15 +59,24 @@
                                                     <label for="example-url-input" class="col-md-3 col-form-label">Category Type</label>
                                                     <div class="col-md-9">
                                                         <select class="multiple-select2-tag" name="category_type" id="category_type" data-placeholder="Choose ...">
-                                                            <option value="All">All</option>
+                                                            <option value="Course">Course</option>
                                                             <option value="News">News</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Category Image</label>
+                                                    <div class="col-md-9">
+                                                        <input type="file" class="filestyle" name="image_upload" id="image_upload" data-buttonname="btn-secondary" placeholder="Upload your image....">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
                                                     <label for="example-text-input" class="col-md-3 col-form-label">Category Tags</label>
                                                     <div class="col-md-9">
-                                                        <textarea class="form-control" type="text" name="category_tags" id="category_tags" rows="3" placeholder="Enter Category Tags...."></textarea>
+                                                        <!-- <textarea class="form-control" type="text" name="category_tags" id="category_tags" rows="3" placeholder="Enter Category Tags...."></textarea> -->
+                                                        <select style="width: 100%;" class="multiple-select2-tag" name="category_tags" id="category_tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
+                                                            <option selected="selected">tag</option>
+                                                        </select>  
                                                     </div>
                                                 </div>
                                                 <div class="text-center">
@@ -113,7 +122,7 @@
                                     {% for category in categories_list %}
                                     <tr style="text-align: center;">
                                         <td> 
-                                            <img src="" width="50" height="50">
+                                            <img src="{{ category.category_image }}" width="50" height="50">
                                         </td>
                                         <td>
                                             <a href="{% url 'categories-detail' category.id %}">{{ category.category_name | slice:":50"}}</a>
@@ -183,6 +192,8 @@
 <script>
     $(document).ready(function() {
     $('.multiple-select2-tag').select2({
+        tags: true,
+        tokenSeparators: [',', ' '],
         dropdownParent: $("#addModal")
     });
 });

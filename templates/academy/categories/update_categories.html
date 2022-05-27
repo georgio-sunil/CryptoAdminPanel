@@ -36,7 +36,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <form id="add-category" method="POST">
+                        <form id="add-category" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group">
                                 <div class="col-md-8">
@@ -45,25 +45,37 @@
                                         <label for="news_title">Category Name</label> 
                                     </div>
                                 </div>
+                                
                                 <br>
-                                <div class="col-md-8">
-                                    <div class="form-floating mb-2">
-                                        <!-- <label for="example-url-input" class="col-md-3 col-form-label">Category Type</label> -->
-                                        <div class="col-md-9">
-                                            <select class="multiple-select2-tag" name="category_type" id="category_type" value="{{ category.category_type }}" data-placeholder="Choose ...">
-                                                <option value="All">All</option>
-                                                <option value="News">News</option>
-                                            </select>
-                                        </div>
+
+                                <div>
+                                    <label class="form-label">Category Tags</label>
+                                    <div class="col-md-8">
+                                        <select style="width: 100%;" class="multiple-select2-tag" name="category_type" id="category_type" value="{{ category.category_type }}" data-placeholder="Choose ...">
+                                            <option value="Course">Course</option>
+                                            <option value="News">News</option>
+                                        </select>
                                     </div>
                                 </div>
+
+                                <br>
+
+                                <div class="col-md-8">
+                                    <label for="image_upload">Upload Image</label>
+                                    <input type="file" class="filestyle" name="image_upload" id="image_upload" data-buttonname="btn-secondary" placeholder="Upload your image....">
+                                </div>
+                                <input type="hidden" name="image_upload" id="image_upload" value="{{ category.category_image }}" >
 
                                 <br>
 
                                 <div>
                                     <label class="form-label">Category Tags</label>
                                     <div class="col-md-8">
-                                        <textarea class="form-control" type="text" name="category_tags" id="category_tags" rows="3">{{ category.tags }}</textarea>
+                                        <select style="width: 100%;" class="multiple-select2-tag" name="tags" id="tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
+                                            {% for tags in category.tags %}
+                                                <option value="{{tags}}" selected hidden>{{tags}}</option>
+                                            {% endfor %}
+                                        </select>  
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +125,8 @@
 <script>
     $(document).ready(function() {
     $('.multiple-select2-tag').select2({
-        dropdownParent: $("#addModal")
+        tags: true,
+        tokenSeparators: [',', ' ']
     });
 });
 </script>
