@@ -63,11 +63,11 @@ def feedStatus(feedID, status):
     request_url = BASE_URL + NEWS_FEED_ENDPOINT + "/" + feedID + "/"
     if status == True:
         requestBody = {
-            "active" : True
+            "status" : True
         }
     else:
         requestBody = {
-            "active" : False
+            "status" : False
         }
     headers = {
     'accept': 'application/json'
@@ -79,6 +79,29 @@ def feedStatus(feedID, status):
     else:
         print(response.content)
         print("Update Failed")
+
+def addNewsFeed(newsFeedObject):
+    request_url = BASE_URL + NEWS_FEED_ENDPOINT
+    requestBody = newsFeedObject
+    headers = {
+    'accept': 'application/json'
+    }
+    response = requests.post(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        return True
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
+def fetchFeed():
+    request_url = BASE_URL + NEWS_FEED_ENDPOINT
+    response = requests.get(request_url)
+    if response.status_code == 200:
+        feed_list = response.json()
+        feed_list = dict((key,value) for key, value in feed_list.items() if key == 'results')
+        feed_list = feed_list['results']
+    return feed_list
 
 def fetchNews():
     request_url = BASE_URL + NEWS_API_ENDPOINT

@@ -2,9 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
-from News.forms import CreateNewsForm
+from News.forms import AddNewsFeedForm, CreateNewsForm
 from services import api
 from services.models.News import AddNews
+from services.models.NewsFeed import AddNewsFeed
 from utilities.uploadFile import saveFile
 
 # Create your views here.
@@ -13,6 +14,20 @@ class NewsTable(LoginRequiredMixin, TemplateView):
     template_name = "news/news-table.html"
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        form = AddNewsFeedForm(request.POST or None)
+        if form.is_valid():
+            n = AddNewsFeed(form.cleaned_data['feed_name'],
+                form.cleaned_data['feed_url']
+            )
+            print(n)
+            if api.addNewsFeed(n):
+                return HttpResponseRedirect(reverse('news-feed'))
+
+        return HttpResponseRedirect(self.request.path_info)
+
 
     def get_context_data(self, **kwargs):
         news_list = api.fetchNews()
@@ -27,27 +42,30 @@ class NewsFeedTable(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
-    # def post(self, request, *args, **kwargs):
-    #     # Disable the feed.
-    #     if 'disable-feed' in self.request.POST:
-    #         toDisable = request.POST.getlist('feed-check')
-    #         for id in toDisable:
-    #             if api.feedStatus(id, False):
-    #                 print("Feed Disabled")
+    def post(self, request, *args, **kwargs):
+        # Disable the feed.
+        if 'disable-feed' in self.request.POST:
+            print(request.POST)
+            toDisable = request.POST.getlist('feed-check')
+            for id in toDisable:
+                if api.feedStatus(id, False):
+                    print("Feed Disabled")
 
-    #     # Enable the feed.
-    #     elif 'enable-feed' in self.request.POST:
-    #         toEnable = request.POST.getlist('feed-check')
-    #         for id in toEnable:
-    #             if api.feedStatus(id, True):
-    #                 print("Feed Enabled")
+        # Enable the feed.
+        elif 'enable-feed' in self.request.POST:
+            toEnable = request.POST.getlist('feed-check')
+            for id in toEnable:
+                if api.feedStatus(id, True):
+                    print("Feed Enabled")
+        return HttpResponseRedirect(self.request.path_info)
+
     
-    # def get_context_data(self, **kwargs):
-    #     feed_list = NewsFeed.objects.all()
-    #     context = {
-    #         "news_feed_list": feed_list
-    #     }
-    #     return context
+    def get_context_data(self, **kwargs):
+        feed_list = api.fetchFeed()
+        context = {
+            "news_feed_list": feed_list
+        }
+        return context
 
 class CreateNews(LoginRequiredMixin, TemplateView):
     template_name = "news/add-news.html"

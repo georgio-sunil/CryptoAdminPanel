@@ -13,3 +13,7 @@ class CreateNewsForm(forms.Form):
 
 class NewsFileForm(forms.Form):
     image_upload = forms.FileField()
+
+class AddNewsFeedForm(forms.Form):
+    feed_name = forms.CharField(max_length=60)
+    feed_url = forms.CharField(max_length=300)
