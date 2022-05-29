@@ -70,15 +70,6 @@
                                     <label for="tags" class="form-label"></label>
                     
                                     <select style="width: 100%;" class="multiple-select2-tag" name="tags" id="tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
-                                        <optgroup label="Crypto Tags">
-                                            <option value="cryptocurrency">CryptoCurrency</option>
-                                            <option value="ADA">Cardano</option>
-                                            <option value="ETH">Ethereum</option>
-                                        </optgroup>
-                                        <optgroup label="Blockchain Tags">
-                                            <option value="BC">Blockchain</option>
-                                            <option value="B">Blocks</option>
-                                        </optgroup>
                                     </select>
                                     {{ form.errors.tags}}
                                 </div>
@@ -168,7 +159,10 @@
 
 <script>
     $(document).ready(function() {
-    $('.multiple-select2-tag').select2();
+    $('.multiple-select2-tag').select2({
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
 });
 </script>
 {% endblock extra_javascript %}

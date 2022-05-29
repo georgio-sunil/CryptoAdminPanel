@@ -59,15 +59,6 @@
                                         <div class="form-floating mb-2">
                                             <label for="tags">Tags</label>
                                             <select style="width: 100%;" class="multiple-select2-tag" name="tags" id="tags" multiple="multiple" multiple data-placeholder="Choose Tags ...">
-                                                <optgroup label="Crypto Tags">
-                                                    <option value="cryptocurrency">CryptoCurrency</option>
-                                                    <option value="ADA">Cardano</option>
-                                                    <option value="ETH">Ethereum</option>
-                                                </optgroup>
-                                                <optgroup label="Blockchain Tags">
-                                                    <option value="BC">Blockchain</option>
-                                                    <option value="B">Blocks</option>
-                                                </optgroup>
                                                 {% for tags in news.tags %}
                                                     <option value="{{tags}}" selected hidden>{{tags}}</option>
                                                 {% endfor %}

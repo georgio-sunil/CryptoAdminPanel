@@ -75,11 +75,12 @@ class CreateNews(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = CreateNewsForm(request.POST or None)
-        print(request.FILES['image_upload'])
+        news_tags = request.POST.getlist('tags')
+        print(news_tags)
         image_url = saveFile(request.FILES['image_upload'], 'news_images')
         if form.is_valid():
             n = AddNews(form.cleaned_data['news_title'],
-                form.cleaned_data['tags'],
+                news_tags,
                 form.cleaned_data['content'],
                 image_url
             )
@@ -111,17 +112,18 @@ class UpdateNews(LoginRequiredMixin, TemplateView):
         #     image_url = request.POST['image_upload']
         # else:
         #     image_url = saveFile(request.FILES['image_upload'], 'news_images')
-        
+
+        news_tags = request.POST.getlist('tags')
+
         if 'image_upload' in request.FILES:
             image_url = saveFile(request.FILES['image_upload'], 'news_images')
         else:
             image_url = request.POST['image_upload']
 
-        # print(form)
         if form.is_valid():
             print("valid")
             n = AddNews(form.cleaned_data['news_title'],
-                form.cleaned_data['tags'],
+                news_tags,
                 form.cleaned_data['content'],
                 image_url
             )
