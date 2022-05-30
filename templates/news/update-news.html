@@ -134,7 +134,10 @@
 <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
 <script>
     $(document).ready(function() {
-    $('.multiple-select2-tag').select2();
+    $('.multiple-select2-tag').select2({
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
 });
 </script>
 
