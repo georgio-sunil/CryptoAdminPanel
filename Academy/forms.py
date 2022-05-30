@@ -2,25 +2,23 @@ from django import forms
 from django.contrib import admin
 
 class AddCourseForm(forms.Form):
-    OPTIONS = (
-        ("ETH", "Ethereum"),
-        ("ADA", "Cardano"),
-    )
     course_name = forms.CharField(max_length=200)
-    course_tags = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                          choices=OPTIONS)
+    # course_tags = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+    #                                       choices=OPTIONS)
     course_url = forms.CharField(max_length=200)
+    course_color = forms.CharField(max_length=30)
+    topic_count = forms.IntegerField(max_value=10)
+    video_count = forms.IntegerField(max_value=10)
     course_desc = forms.CharField(max_length=500)
 
 class UpdateCourseForm(forms.Form):
-    OPTIONS = (
-        ("ETH", "Ethereum"),
-        ("ADA", "Cardano"),
-    )
     course_name = forms.CharField(max_length=200)
-    course_tags = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                          choices=OPTIONS)
+    # course_tags = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+    #                                       choices=OPTIONS)
     course_url = forms.CharField(max_length=200)
+    course_color = forms.CharField(max_length=30)
+    topic_count = forms.IntegerField(max_value=10)
+    video_count = forms.IntegerField(max_value=10)
     course_desc = forms.CharField(max_length=500)
 
 class TopicForm(forms.Form):

@@ -15,6 +15,7 @@
 <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet"
     type="text/css" />
 
+<link href="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'libs/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
 <link href="{% static 'libs/spectrum-colorpicker2/dist/spectrum.min.css' %}" rel="stylesheet" type="text/css">
@@ -69,6 +70,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <div class="mb-3 row">
                                                     <label for="example-text-input" class="col-md-3 col-form-label">Course Link</label>
                                                     <div class="col-md-9">
@@ -81,6 +83,28 @@
                                                         <input type="file" class="filestyle" name="course_image" id="course_image" data-buttonname="btn-secondary">
                                                     </div>
                                                 </div>
+
+                                                <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Course Background</label>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control" name="course_color" id="colorpicker-default" value="#50a5f1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Topic Count</label>
+                                                    <div class="col-md-9">
+                                                        <input class="form-control" type="text" placeholder="Enter Topic Count" name="topic_count" id="topic_count">
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3 row">
+                                                    <label for="example-text-input" class="col-md-3 col-form-label">Video Count</label>
+                                                    <div class="col-md-9">
+                                                        <input class="form-control" type="text" placeholder="Enter Video Count...." name="video_count" id="video_count">
+                                                    </div>
+                                                </div>
+
                                                 <div class="mb-3 row">
                                                     <label for="example-text-input" class="col-md-3 col-form-label">Course Description</label>
                                                     <div class="col-md-9">
@@ -139,10 +163,10 @@
                                             </a>
                                         </td>
                                         <td>{{ course.course_name  }}</td>
+                                        <td>{{ course.topic_count  }}</td>
+                                        <td>{{ course.video_count  }}</td>
                                         <td>{{ course.course_name  }}</td>
-                                        <td>{{ course.course_name  }}</td>
-                                        <td>{{ course.course_name  }}</td>
-                                        <td>{{ course.course_name  }}</td>
+                                        <td>{{ course.course_date }}</td>
                                         <td style="display: block; text-align: center; margin: auto;">
                                             {% if feed.status == True %}
                                             <!-- <button type="button" class="btn btn-success btn-rounded waves-effect waves-light">Active</button> -->
@@ -203,7 +227,8 @@
     $(document).ready(function() {
     $('.multiple-select2-tag').select2({
         dropdownParent: $("#addModal")
-    });
+    }),
+    $("#colorpicker-default").spectrum();
 });
 </script>
 {% endblock extra_javascript %}

@@ -1,3 +1,4 @@
+import datetime
 from unicodedata import category
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -19,13 +20,17 @@ class CourseTable(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = AddCourseForm(request.POST or None)
         image_url = saveFile(request.FILES['course_image'], 'course_images')
+        course_tags = request.POST.getlist('course_tags')
         print(form)
         if form.is_valid():
             course = AddCourse(
                 form.cleaned_data['course_name'],
-                form.cleaned_data['course_tags'],
+                course_tags,
                 image_url,
                 form.cleaned_data['course_url'],
+                form.cleaned_data['topic_count'],
+                form.cleaned_data['video_count'],
+                form.cleaned_data['course_color'],
                 form.cleaned_data['course_desc']
             )
             if api.addCourse(course):
@@ -34,6 +39,9 @@ class CourseTable(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         course_list = api.fetchCourses()
+        for course in course_list:
+            course['course_date'] =  course['course_date'].split('T')[0]
+
         context = {
             "course_list": course_list,
         }
@@ -115,6 +123,9 @@ class ViewCourse(LoginRequiredMixin, TemplateView):
         form = UpdateCourseForm(request.POST or None)
         print('Status ' ,request.FILES.get('image_upload', True))
         
+        course_tags = request.POST.getlist('course_tags')
+
+
         if 'image_upload' in request.FILES:
             image_url = saveFile(request.FILES['image_upload'], 'news_images')
         else:
@@ -124,9 +135,12 @@ class ViewCourse(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             course = UpdateCourse(
                 course_name = form.cleaned_data['course_name'],
-                course_tags = form.cleaned_data['course_tags'],
+                course_tags = course_tags,
                 course_image=image_url,
                 course_url= form.cleaned_data['course_url'],
+                topic_count = form.cleaned_data['topic_count'],
+                video_count = form.cleaned_data['video_count'],
+                course_color = form.cleaned_data['course_color'],
                 course_desc = form.cleaned_data['course_desc'] 
             )
             print(course)
