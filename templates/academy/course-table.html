@@ -63,10 +63,6 @@
                                                     <label for="example-url-input" class="col-md-3 col-form-label">Course Tags</label>
                                                     <div class="col-md-9">
                                                         <select class="multiple-select2-tag" name="course_tags" id="course_tags" multiple="multiple" multiple data-placeholder="Choose ...">
-                                                            <optgroup label="Crypto Tags">
-                                                                <option value="ADA">Cardano</option>
-                                                                <option value="ETH">Ethereum</option>
-                                                            </optgroup>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -228,7 +224,12 @@
     $('.multiple-select2-tag').select2({
         dropdownParent: $("#addModal")
     }),
-    $("#colorpicker-default").spectrum();
+    $("#colorpicker-default").spectrum(),
+    $('.multiple-select2-tag').select2({
+        dropdownParent: $("#updateModal"),
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
 });
 </script>
 {% endblock extra_javascript %}
