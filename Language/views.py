@@ -1,11 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
-from Language.forms import AddLanguageForm
+from Language.forms import AddLanguageForm, UpdateLanguageForm
 from services import api
-from services.models.Language import AddLanguage
+from services.models.Language import AddLanguage, updateLanguage
 from utilities.uploadFile import saveFile
 
 # Create your views here.
@@ -35,12 +35,12 @@ class LanguageTable(LoginRequiredMixin, TemplateView):
             form = AddLanguageForm(request.POST or None)
             image_url = saveFile(request.FILES['image_upload'], 'language_images')
             if form.is_valid():
-                course = AddLanguage(
+                language = AddLanguage(
                     form.cleaned_data['locale_name'],
                     form.cleaned_data['language_name'],
                     image_url
                 )
-                if api.addLanguage(course):
+                if api.addLanguage(language):
                     print("Language Added")
             return HttpResponseRedirect(reverse('language-table'))
         return HttpResponseRedirect(self.request.path_info)
@@ -51,3 +51,37 @@ class LanguageTable(LoginRequiredMixin, TemplateView):
             "language_list": language_list
         }
         return context
+
+class UpdateLanguage(LoginRequiredMixin, TemplateView):
+    template_name = "language/update-language.html"
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+    success_url = reverse_lazy('language-table')
+
+    def get_context_data(self, **kwargs):
+        languageID = str(self.kwargs['pk'])
+        language_list = api.fetchSingleLanguage(languageID)
+        context = {
+            "language": language_list
+        }
+        return context
+
+    def post(self, request, *args, **kwargs):
+        languageID = str(self.kwargs['pk'])
+        form = UpdateLanguageForm(request.POST or None)
+
+        if 'image_upload' in request.FILES:
+            image_url = saveFile(request.FILES['image_upload'], 'language_images')
+        else:
+            image_url = request.POST['image_upload']
+
+        if form.is_valid():
+            language = updateLanguage(
+                form.cleaned_data['locale_name'],
+                form.cleaned_data['language_name'],
+                image_url
+                )
+            if api.updateLanguage(languageID, language):
+                return HttpResponseRedirect(reverse('language-table'))
+
+        return HttpResponseRedirect(self.request.path_info)

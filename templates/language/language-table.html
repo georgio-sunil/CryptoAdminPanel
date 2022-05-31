@@ -117,7 +117,11 @@
                                         <td>
                                             <img src="{{language.image}}" width="50" height="50">
                                         </td>
-                                        <td>{{ language.name }}</td>
+                                        <td>
+                                            <a href="{% url 'language-update' language.id %}">
+                                                {{ language.name }}
+                                            </a>
+                                        </td>
                                         <td style="display: block; text-align: center; margin: auto;">
                                             {% if language.is_active == True %}
                                             <!-- <button type="button" class="btn btn-success btn-rounded waves-effect waves-light">Active</button> -->
