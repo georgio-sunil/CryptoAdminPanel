@@ -1,4 +1,4 @@
-from services.urls import CATEGORIES_API_ENDPOINT, COIN_API_ENDPOINT, CMC_COIN_LIST, BASE_URL, COURSE_API_ENDPOINT, NEWS_API_ENDPOINT, NEWS_FEED_ENDPOINT
+from services.urls import CATEGORIES_API_ENDPOINT, COIN_API_ENDPOINT, CMC_COIN_LIST, BASE_URL, COURSE_API_ENDPOINT, LANGUAGES_API_ENDPOINT, NEWS_API_ENDPOINT, NEWS_FEED_ENDPOINT
 import requests
 
 
@@ -80,6 +80,27 @@ def feedStatus(feedID, status):
         print(response.content)
         print("Update Failed")
 
+def languageStatus(languageID, status):
+    request_url = BASE_URL + LANGUAGES_API_ENDPOINT + "/" + languageID + "/"
+    if status == True:
+        requestBody = {
+            "is_active" : True
+        }
+    else:
+        requestBody = {
+            "is_active" : False
+        }
+    headers = {
+    'accept': 'application/json'
+    }
+    print(request_url)
+    response = requests.patch(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200:
+        return True
+    else:
+        print(response.content)
+        print("Update Failed")
+
 def addNewsFeed(newsFeedObject):
     request_url = BASE_URL + NEWS_FEED_ENDPOINT
     requestBody = newsFeedObject
@@ -111,6 +132,23 @@ def fetchNews():
         news_list = dict((key,value) for key, value in news_list.items() if key == 'results')
         news_list = news_list['results']
     return news_list
+
+def fetchLanguages():
+    request_url = BASE_URL + LANGUAGES_API_ENDPOINT
+    response = requests.get(request_url)
+    if response.status_code == 200:
+        language_list = response.json()
+        language_list = dict((key,value) for key, value in language_list.items() if key == 'results')
+        language_list = language_list['results']
+    return language_list
+
+def fetchSingleLanguage(id):
+    request_url = BASE_URL + LANGUAGES_API_ENDPOINT + "/" + id
+    response = requests.get(request_url)
+    if response.status_code == 200:
+        language_list = response.json()
+        language_list = dict((key,value) for key, value in language_list.items())
+    return language_list
 
 def fetchSingleNews(id):
     request_url = BASE_URL + NEWS_API_ENDPOINT + "/" + id
@@ -187,6 +225,20 @@ def addCourse(courseObject):
         print(response.content)
         return False
 
+def addLanguage(languageObject):
+    request_url = BASE_URL + LANGUAGES_API_ENDPOINT + "/"
+    requestBody = languageObject
+    headers = {
+    'accept': 'application/json'
+    }
+    response = requests.post(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        return True
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
 def updateCourse(id, courseObject):
     request_url = BASE_URL + COURSE_API_ENDPOINT + "/" + id + "/"
     requestBody = courseObject
@@ -198,6 +250,21 @@ def updateCourse(id, courseObject):
     response = requests.patch(request_url, json=requestBody, headers=headers)
     if response.status_code == 200 or response.status_code == 201:
         print("Course Updated")
+        return True
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
+def updateLanguage(id, languageObject):
+    request_url = BASE_URL + LANGUAGES_API_ENDPOINT + "/" + id + "/"
+    requestBody = languageObject
+    headers = {
+    'accept': 'application/json'
+    }
+    response = requests.patch(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        print("Language Updated")
         return True
     else:
         print("Transaction Failed")

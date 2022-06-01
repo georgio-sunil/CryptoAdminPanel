@@ -5,6 +5,7 @@ NEWS_API_ENDPOINT = "news"
 NEWS_FEED_ENDPOINT = "newsfeed"
 COURSE_API_ENDPOINT = "courses"
 CATEGORIES_API_ENDPOINT = "categories"
+LANGUAGES_API_ENDPOINT = "languages"
 
 
 CMC_COIN_LIST = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=100&convert=USD"
