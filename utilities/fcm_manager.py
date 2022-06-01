@@ -32,5 +32,5 @@ def sendPush(title, msg, image, registration_token, dataObject=None):
 
     response = messaging.send(message=messageObject)
 
-    print(response)
     print('Successfully sent message:', response)
+    return True

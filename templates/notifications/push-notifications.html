@@ -1,6 +1,6 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %}Add News{% endblock title %}
+{% block title %}Notifications{% endblock title %}
 {% block extra_css %}
 
 <!-- Plugins css -->
@@ -75,6 +75,20 @@
                                 <button style="width: 15%;" type="submit" class="btn btn-primary btn-lg waves-effect waves-light">Submit</button>
                             </div>
                         </form>
+                        <br>
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                        <div class="alert alert-primary" role="alert">
+                            {{ message }}
+                        {% endif %}
+                        {% if message.tags == 'error' %}
+                        <div class="alert alert-primary" role="alert">
+                            {{ message }}
+                        </div>   
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 <!-- end card -->
