@@ -1,6 +1,6 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %}Categories List{% endblock title %}
+{% block title %}Update Category{% endblock title %}
 {% block extra_css %}
 <!-- DataTables -->
 <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
@@ -52,6 +52,7 @@
                                     <label class="form-label">Category Tags</label>
                                     <div class="col-md-8">
                                         <select style="width: 100%;" class="multiple-select2-tag" name="category_type" id="category_type" value="{{ category.category_type }}" data-placeholder="Choose ...">
+                                            <option value="All">All</option>
                                             <option value="Course">Course</option>
                                             <option value="News">News</option>
                                         </select>
