@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateView
 from Language.forms import AddLanguageForm, UpdateLanguageForm
 from services import api
 from services.models.Language import AddLanguage, updateLanguage
-from utilities.uploadFile import saveFile
+from utilities.uploadFile import saveFile, saveUniqueFile
 
 # Create your views here.
 
@@ -34,11 +34,13 @@ class LanguageTable(LoginRequiredMixin, TemplateView):
         elif 'add-language' in self.request.POST:
             form = AddLanguageForm(request.POST or None)
             image_url = saveFile(request.FILES['image_upload'], 'language_images')
+            language_file_url = saveUniqueFile(request.FILES['language_file'], 'language_file')
             if form.is_valid():
                 language = AddLanguage(
                     form.cleaned_data['locale_name'],
                     form.cleaned_data['language_name'],
-                    image_url
+                    image_url,
+                    language_file_url
                 )
                 if api.addLanguage(language):
                     print("Language Added")
@@ -75,11 +77,17 @@ class UpdateLanguage(LoginRequiredMixin, TemplateView):
         else:
             image_url = request.POST['image_upload']
 
+        if 'language_file' in request.FILES:
+            language_file_url = saveUniqueFile(request.FILES['language_file'], 'language_file')
+        else:
+            language_file_url = request.POST['language_file']
+        
         if form.is_valid():
             language = updateLanguage(
                 form.cleaned_data['locale_name'],
                 form.cleaned_data['language_name'],
-                image_url
+                image_url,
+                language_file_url
                 )
             if api.updateLanguage(languageID, language):
                 return HttpResponseRedirect(reverse('language-table'))

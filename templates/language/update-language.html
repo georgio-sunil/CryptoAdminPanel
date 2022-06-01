@@ -67,8 +67,14 @@
                                         <input type="file" class="filestyle" name="image_upload" id="image_upload" data-buttonname="btn-secondary" placeholder="Upload your image....">
                                     </div>
                                     <input type="hidden" name="image_upload" id="image_upload" value="{{ language.image }}" >
-                                    <br>
+                                    
+                                    <div class="col-md-8">
+                                        <label for="image_upload">Upload Language File</label>
+                                        <input type="file" class="filestyle" name="language_file" id="language_file" data-buttonname="btn-secondary" placeholder="Upload your file....">
+                                    </div>
+                                    <input type="hidden" name="language_file" id="language_file" value="{{ language.string_file_url }}" >
 
+                                    <br>
                                 </div>
                             <br>
                             <div style="text-align: right;">
