@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
+from django.contrib import messages
 from Language.forms import AddLanguageForm, UpdateLanguageForm
 from services import api
 from services.models.Language import AddLanguage, updateLanguage
@@ -23,12 +24,14 @@ class LanguageTable(LoginRequiredMixin, TemplateView):
             toDisable = request.POST.getlist('language-check')
             for id in toDisable:
                 if api.languageStatus(id, False):
+                    messages.success(self.request, "Language Disabled")
                     print("Language Disabled")
 
         elif 'enable-language' in self.request.POST:
             toEnable = request.POST.getlist('language-check')
             for id in toEnable:
                 if api.languageStatus(id, True):
+                    messages.success(self.request, "Language Enabled")
                     print("Language Enabled")
         
         elif 'add-language' in self.request.POST:
@@ -43,8 +46,8 @@ class LanguageTable(LoginRequiredMixin, TemplateView):
                     language_file_url
                 )
                 if api.addLanguage(language):
+                    messages.success(self.request, "Language added")
                     print("Language Added")
-            return HttpResponseRedirect(reverse('language-table'))
         return HttpResponseRedirect(self.request.path_info)
 
     def get_context_data(self, **kwargs):

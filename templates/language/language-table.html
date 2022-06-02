@@ -37,7 +37,6 @@
                                     data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Add New Language +
                                 </button>
                             </div>
-
                             <!-- Add New Language Modal-->
                             <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
                             aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -92,6 +91,19 @@
                         </td>
                     </tr>
                 </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                        <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                        {% endif %}
+                        {% if message.tags == 'error' %}
+                        <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                        </div>   
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <!-- end page title -->
