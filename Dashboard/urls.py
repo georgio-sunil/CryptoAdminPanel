@@ -15,5 +15,6 @@ urlpatterns = [
     path('news/', include('News.urls')),
     path('courses/', include('Academy.urls')),
     path('language/', include('Language.urls')),
-    path('notifications/', include('Notifications.urls'))
+    path('notifications/', include('Notifications.urls')),
+    path('tools/', include('Tools.urls'))
 ]

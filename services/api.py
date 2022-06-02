@@ -1,4 +1,4 @@
-from services.urls import CATEGORIES_API_ENDPOINT, COIN_API_ENDPOINT, CMC_COIN_LIST, BASE_URL, COURSE_API_ENDPOINT, LANGUAGES_API_ENDPOINT, NEWS_API_ENDPOINT, NEWS_FEED_ENDPOINT
+from services.urls import BANNERS_API_ENDPOINT, CATEGORIES_API_ENDPOINT, COIN_API_ENDPOINT, CMC_COIN_LIST, BASE_URL, COURSE_API_ENDPOINT, LANGUAGES_API_ENDPOINT, NEWS_API_ENDPOINT, NEWS_FEED_ENDPOINT
 import requests
 
 
@@ -316,6 +316,50 @@ def updateCategory(id, categoryObject):
     'accept': 'application/json'
     }
     response = requests.patch(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        return True
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
+def fetchBanners():
+    request_url = BASE_URL + BANNERS_API_ENDPOINT
+    response = requests.get(request_url)
+    if response.status_code == 200:
+        banners_list = response.json()
+        banners_list = dict((key,value) for key, value in banners_list.items() if key == 'results')
+        banners_list = banners_list['results']
+    return banners_list
+
+def bannerStatus(bannerID, status):
+    request_url = BASE_URL + BANNERS_API_ENDPOINT + "/" + bannerID + "/"
+    if status == True:
+        requestBody = {
+            "is_active" : "True"
+        }
+    else:
+        requestBody = {
+            "is_active" : "False"
+        }
+    headers = {
+    'accept': 'application/json'
+    }
+    print(request_url)
+    response = requests.patch(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200:
+        return True
+    else:
+        print(response.content)
+        print("Update Failed")
+
+def addBanner(bannerObject):
+    request_url = BASE_URL + BANNERS_API_ENDPOINT + "/"
+    requestBody = bannerObject
+    headers = {
+    'accept': 'application/json'
+    }
+    response = requests.post(request_url, json=requestBody, headers=headers)
     if response.status_code == 200 or response.status_code == 201:
         return True
     else:
