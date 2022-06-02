@@ -1,4 +1,5 @@
 from datetime import datetime
+import uuid
 import firebase_admin
 from firebase_admin import credentials, messaging, firestore
 
@@ -32,6 +33,26 @@ def sendPush(title, msg, image, registration_token, dataObject=None):
     )
 
     response = messaging.send(message=messageObject)
+    saveNotifications(title, msg, image)
 
     print('Successfully sent message:', response)
     return True
+
+def saveNotifications(title, body, image):
+    db = firestore.client()
+    doc_ref  = db.collection('public_notifications').document(str(uuid.uuid4()))
+    doc_ref.set({
+        'title' : title,
+        'body' : body,
+        'notification_date' : datetime.today(),
+        'image' : image
+    })
+
+def getNotificationsFromFCM():
+    notifications = []
+    db = firestore.client()
+    docs = db.collection('public_notifications').order_by('notification_date', direction=firestore.Query.DESCENDING).stream()
+    for doc in docs:
+        notifications.append(doc.to_dict())
+    return notifications
+        

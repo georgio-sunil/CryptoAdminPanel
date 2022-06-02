@@ -58,15 +58,14 @@
 
                             <div class="row">
                                 <div class="col-md-8">
-                                    <div class="form-floating mb-2">    
-                                        <input type="text" class="form-control" name="notification_image_url" id="notification_image_url" placeholder="Notification Title" required>
-                                        <label for="notification_image_url">Notification Image URL</label>
-                                    </div>
+                                    <label for="image_upload">Upload Image</label>
+                                    <input type="file" class="filestyle" name="image_upload" id="image_upload" data-buttonname="btn-secondary" placeholder="Upload your image....">
                                 </div>
                             </div>
-
+                            <br>
                             <div>
                                 <div class="col-md-8">
+                                    <label for="image_upload">Notification Body</label>
                                     <textarea class="form-control" type="text" name="notification_body" id="notification_body" rows="8" placeholder="Enter Notification Body"></textarea>
                                 </div>
                             </div>
