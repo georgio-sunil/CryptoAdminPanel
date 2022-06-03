@@ -150,7 +150,11 @@
                                         <td>
                                             <img src="{{banner.Image}}" width="50" height="50">
                                         </td>
-                                        <td>{{ banner.Banner_title }}</td>
+                                        <td>
+                                            <a href="{% url 'update-banner' banner.id %}">
+                                                {{ banner.Banner_title }}
+                                            </a>
+                                        </td>
                                         <td>{{ banner.Button_link }}</td>
                                         <td style="display: block; text-align: center; margin: auto;">
                                             {% if banner.is_active == "True" %}

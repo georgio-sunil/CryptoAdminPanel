@@ -5,14 +5,14 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 from Language.forms import AddLanguageForm, UpdateLanguageForm
-from Tools.forms import AddBannersForm
+from Tools.forms import AddBannersForm, UpdateBannerForms
 from services import api
-from services.models.Banners import AddBanners
+from services.models.Banners import AddBanners, UpdateBanner
 from utilities.uploadFile import saveFile, saveUniqueFile
 
 class BannerTable(LoginRequiredMixin, TemplateView):
-    template_name = "tools/banner.html"
-    success_url = "tools/banner.html"
+    template_name = "tools/banner/banner.html"
+    success_url = "tools/banner/banner.html"
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
@@ -56,4 +56,41 @@ class BannerTable(LoginRequiredMixin, TemplateView):
         context = {
             "banners_list": banners_list
         }
+        return context
+
+class UpdateBannerDetails(LoginRequiredMixin, TemplateView):
+    template_name = "tools/banner/update-banner.html"
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+    pk_url_kwarg = 'pk'
+
+    def post(self, request, *args, **kwargs):
+        form = UpdateBannerForms(request.POST or None)
+        bannerID = str(self.kwargs['pk'])
+
+        if 'image_upload' in request.FILES:
+            image_url = saveFile(request.FILES['image_upload'], 'banner_images')
+        else:
+            image_url = request.POST['image_upload']
+        print(form)
+        if form.is_valid():
+            banner = UpdateBanner(
+                image_url,
+                form.cleaned_data['banner_title'],
+                form.cleaned_data['banner_text'],
+                form.cleaned_data['button_text'],
+                form.cleaned_data['button_link'],
+                form.cleaned_data['banner_color'],
+            )
+            print(banner)  
+            if api.updateBanner(bannerID, banner):
+                print("Banner Updated")
+        return HttpResponseRedirect(reverse('banner-table'))
+
+    def get_context_data(self, **kwargs):
+        bannerID = str(self.kwargs['pk'])
+        banner_details = api.fetchBanner(bannerID)
+        context = {
+            "banner" : banner_details
+            }
         return context

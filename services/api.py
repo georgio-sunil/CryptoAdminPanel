@@ -332,6 +332,31 @@ def fetchBanners():
         banners_list = banners_list['results']
     return banners_list
 
+def fetchBanner(id):
+    request_url = BASE_URL + BANNERS_API_ENDPOINT + "/" + id + "/"
+    response = requests.get(request_url)
+    if response.status_code == 200:
+        banners_list = response.json()
+        return banners_list
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
+def updateBanner(id, bannerObject):
+    request_url = BASE_URL + BANNERS_API_ENDPOINT + "/" + id + "/"
+    requestBody = bannerObject
+    headers = {
+    'accept': 'application/json'
+    }
+    response = requests.patch(request_url, json=requestBody, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        return True
+    else:
+        print("Transaction Failed")
+        print(response.content)
+        return False
+
 def bannerStatus(bannerID, status):
     request_url = BASE_URL + BANNERS_API_ENDPOINT + "/" + bannerID + "/"
     if status == True:
