@@ -59,6 +59,23 @@ def coinStatus(coinID, status):
         print(response.content)
         print("Update Failed")
 
+def coinRanking(coinID, rank):
+    request_url = BASE_URL + COIN_API_ENDPOINT + "/" + coinID + "/"
+    requestBody = {
+        "coin_rank" : rank
+    }
+    headers = {
+    'accept': 'application/json'
+    }
+    print(request_url)
+    response = requests.patch(request_url, json=requestBody, headers=headers)
+    print(response)
+    if response.status_code == 200:
+        return True
+    else:
+        print(response.content)
+        print("Update Failed")
+
 def feedStatus(feedID, status):
     request_url = BASE_URL + NEWS_FEED_ENDPOINT + "/" + feedID + "/"
     if status == True:

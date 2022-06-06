@@ -33,14 +33,21 @@
                                     class="btn btn-success btn-lg waves-effect waves-light">Enable</button>
                                 <button type="submit" form="disable-coin" name="disable-coin"
                                     class="btn btn-secondary btn-lg waves-effect waves-light">Disable</button>
-                                <!-- Small modal -->
-                                <button type="button" class="btn btn-primary btn-lg waves-effect waves-light"
-                                    data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Add New Coin +
-                                </button>
+                                <div class="btn-group" role="group">
+                                    <!-- Coin Ranking Modal Button -->
+                                    <button type="button" class="btn btn-pink btn-lg waves-effect waves-light"
+                                    data-bs-toggle="modal" data-bs-target="#addCoinRanking">Assign Coin Ranking
+                                    </button>
+
+                                    <!-- Add Coin Modal Button -->
+                                    <button type="button" class="btn btn-primary btn-lg waves-effect waves-light"
+                                        data-bs-toggle="modal" data-bs-target="#addCoin">Add New Coin +
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Add New Coin Modal-->
-                            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                            <div id="addCoin" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
                                 aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
@@ -95,9 +102,74 @@
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
 
+                            <!-- Add Coin Ranking Modal-->
+                            <div id="addCoinRanking" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                                aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Assign Coin Rank</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form class="needs-validation" method="POST" novalidate>
+                                                {% csrf_token %}
+                                                <table id="state-saving-datatable"
+                                                    class="table table-striped table-bordered dt-responsive nowrap"
+                                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Image</th>
+                                                            <th>Coin Name</th>
+                                                            <th>Coin Ranking</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    
+                                                    <tbody>
+                                                        {% for coin in internal_coins %}
+                                                        <tr>
+                                                            <td>
+                                                                <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/{{coin.id}}.png" width="50" height="50"> 
+                                                            </td>
+                                                            <td> {{ coin.symbol }} </td>
+                                                            <td> 
+                                                                <input class="form-control" type="number" placeholder="Enter Coin Rank...." name="{{ coin.id }}" value="{{ coin.coin_rank }}" required>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                <div class="text-center">
+                                                    <button type="submit" name='add-coin-ranking' class="btn btn-primary mr-auto">Save changes</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
                         </td>
                     </tr>
                 </div>
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{ message }}
+                </div>
+                {% endif %}
+                {% if message.tags == 'error' %}
+                <div class="alert alert-primary" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{ message }}
+                </div>  
+                {% endif %}
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
         <!-- end page title -->
@@ -192,12 +264,6 @@
 
 <!-- init js -->
 <script src="{% static 'js/pages/form-advanced.init.js' %}"></script>
+<script src="{% static 'js/pages/form-validation.init.js' %}"></script>
 
-<script>
-    function buttonChange(index) {
-        var id = "checkButton" + index.toString();
-        document.getElementById(id).className = "btn btn-danger btn-rounded waves-effect waves-light";
-        document.getElementById(id).innerHTML = "Added";
-    }
-</script>
 {% endblock extra_javascript %}

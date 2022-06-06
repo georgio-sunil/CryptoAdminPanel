@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
+from django.contrib import messages
 from services import api
 from services.models.Coin import Coins
 from utilities import validation_checks
@@ -43,6 +44,15 @@ class CoinTable(LoginRequiredMixin, TemplateView):
                 if api.coinStatus(id, True):
                     print("Coin Enabled")
         
+        elif 'add-coin-ranking' in self.request.POST:
+            for key, value in request.POST.items():
+                if key.isnumeric() and (value != ""):
+                    if api.coinRanking(key, value):
+                        print("Coin rank added")
+                    else:
+                        messages.error(self.request, "Coin rank addition unsuccessful.")
+            messages.success(self.request,'Coin ranks for the selected coins added.')
+            return HttpResponseRedirect(self.request.path_info)
         return HttpResponseRedirect(self.request.path_info)
 
     def get_context_data(self, **kwargs):
