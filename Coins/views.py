@@ -5,6 +5,8 @@ from django.contrib import messages
 from services import api
 from services.models.Coin import Coins
 from utilities import validation_checks
+import random
+
 
 class CoinTable(LoginRequiredMixin, TemplateView):
     template_name = "coins/coin-table.html"
@@ -26,7 +28,7 @@ class CoinTable(LoginRequiredMixin, TemplateView):
                     if (coin['id'] == int(id)):
                         logoUrl = "https://s2.coinmarketcap.com/static/img/coins/64x64/" + \
                             str(id) + ".png"
-                        coinObject = Coins(id, coin['symbol'], coin['symbol'], logoUrl, True)
+                        coinObject = Coins(id, coin['symbol'], coin['symbol'], logoUrl, random.randint(0, 1000), True)
                         if api.addCoins(coinObject):
                             print("Coin added")
 

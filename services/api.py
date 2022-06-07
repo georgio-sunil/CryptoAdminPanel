@@ -25,17 +25,33 @@ def fetchCoins():
     return coin_details
 
 def addCoins(coinObject):
-    request_url = BASE_URL + COIN_API_ENDPOINT
+    request_url = BASE_URL + COIN_API_ENDPOINT + "/"
     requestBody = coinObject.__dict__
     headers = {
     'accept': 'application/json'
     }
     response = requests.post(request_url, json=requestBody, headers=headers)
     if response.status_code == 200 or response.status_code == 201:
+        if AddCMCCoin():
+            return True
+    else:
+        print("Adding to Coin DB failed.")
+        print(response.content)
+        return False
+
+def AddCMCCoin():
+    fetch_request_url = BASE_URL + CMC_COIN_LIST + "/fetch/"
+    refresh_request_url = BASE_URL + CMC_COIN_LIST + "/refresh/"
+    headers = {
+    'accept': 'application/json'
+    }
+    fetch_response = requests.get(fetch_request_url, headers=headers)
+    refresh_response = requests.get(refresh_request_url, headers=headers)
+
+    if fetch_response.status_code == 201 or refresh_response.status_code == 200:
         return True
     else:
-        print("Transaction Failed")
-        print(response.content)
+        print("Adding to CMC Failed")
         return False
 
 def coinStatus(coinID, status):
