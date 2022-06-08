@@ -4,10 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
 from django.contrib import messages
-from Language.forms import AddLanguageForm, UpdateLanguageForm
-from Tools.forms import AddBannersForm, UpdateBannerForms
+from Tools.forms import AddBannersForm, FAQForms, UpdateBannerForms
 from services import api
 from services.models.Banners import AddBanners, UpdateBanner
+from services.models.StaticContent import FAQ, UpdateTermsandCondition
 from utilities.uploadFile import saveFile, saveUniqueFile
 
 class BannerTable(LoginRequiredMixin, TemplateView):
@@ -92,5 +92,86 @@ class UpdateBannerDetails(LoginRequiredMixin, TemplateView):
         banner_details = api.fetchBanner(bannerID)
         context = {
             "banner" : banner_details
+            }
+        return context
+
+
+class FAQTable(LoginRequiredMixin, TemplateView):
+    template_name = "tools/static_content/faq.html"
+    success_url = "tools/static-content/faq.html"
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    def post(self, request, *args, **kwargs):
+        
+        print(request.POST)
+        print(request.FILES)
+
+        if 'tandc_file' in request.FILES:
+            terms_and_conditions_url= saveUniqueFile(request.FILES['tandc_file'], 'terms_and_condition_files')
+            tandc_object = UpdateTermsandCondition(terms_and_conditions_url)
+            if api.updateTermsandConditions(tandc_object):
+                print("Terms and Conditions Updated")
+                messages.success(self.request, "Terms and Conditions Updated")
+            else:
+                print("Terms and Conditions Failed")
+                messages.error(self.request, "Terms and Conditions Failed")
+        elif 'add-faq' in request.POST:
+            form = FAQForms(request.POST)
+            if form.is_valid():
+                faq = FAQ(form.cleaned_data['faq_question'],
+                form.cleaned_data['faq_answer']
+                )
+                if api.addFAQ(faq):
+                    messages.success(self.request, "Question Added")
+                else:
+                    print("Question API Failed")
+                    messages.error(self.request, "Question Addition Failed")
+            else:
+                print("Question Addition Failed")
+                messages.error(self.request, "Question Addition Failed")
+        return HttpResponseRedirect(self.request.path_info)
+
+    def get_context_data(self, **kwargs):
+        FAQ = []
+        static_content = api.fetchStaticContent()
+        for content in static_content:
+            if content['content_type'] == "Terms & Conditions":
+                terms_and_conditions = content
+            elif content['content_type'] == "Questions":
+                FAQ.append(content)
+        context = {
+            "terms_and_conditions": terms_and_conditions,
+            "faq" : FAQ
+        }
+        return context
+
+class UpdateFAQDetails(LoginRequiredMixin, TemplateView):
+    template_name = "tools/static_content/update-faq.html"
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+    pk_url_kwarg = 'pk'
+
+    def post(self, request, *args, **kwargs):
+        form = FAQForms(request.POST or None)
+        faqID = str(self.kwargs['pk'])
+
+        if form.is_valid():
+            faq = FAQ(form.cleaned_data['faq_question'],
+            form.cleaned_data['faq_answer']
+            )
+            if api.updateFAQ(faqID, faq):
+                print("Question Updated")
+                messages.success(self.request, "Question Updated")
+            else:
+                messages.error(self.request, "Question Not Updated")
+
+        return HttpResponseRedirect(reverse('faq'))
+
+    def get_context_data(self, **kwargs):
+        faqID = str(self.kwargs['pk'])
+        faq_details = api.fetchFAQ(faqID)
+        context = {
+            "faq" : faq_details
             }
         return context

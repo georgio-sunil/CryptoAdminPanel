@@ -14,3 +14,7 @@ class UpdateBannerForms(forms.Form):
     banner_color = forms.CharField(max_length=100)
     button_text = forms.CharField(max_length=100)
     button_link = forms.CharField(max_length=100)
+
+class FAQForms(forms.Form):
+    faq_question = forms.CharField(max_length=100)
+    faq_answer = forms.CharField(max_length=1000)
